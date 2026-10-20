@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft_gui.py
-# Version   : 1.7
+# Version   : 1.8
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid) in a window
-# Linked to : dft_functions.py, dft.py, lang_se.py, lang_en.py, lang_cz.py
+# Linked to : dft_functions.py, dft_language.py
 #
 # Created by: Urban Björkén
 # Date      : 2026-10-14
@@ -15,7 +15,7 @@ import tkinter as tk
 import logging
 from os import path
 import dft_functions
-import dft    # LANGUAGES, load_language() and save_language(), the same saved language as in the terminal
+import dft_language    # the same languages and saved language as in the terminal
 
 # ** Variables *************************************************
 WINDOW_TITLE = 'D F T'    # until a language is chosen, then the title from the language file
@@ -40,7 +40,7 @@ COL_ERROR = '#f44336'         # red, error message and the field that is wrong
 FONT_HEADER = ('Helvetica', 18, 'bold')
 FONT_TEXT = ('Helvetica', 12)
 
-# the flags, the number is the same as in dft.LANGUAGES and dft_lang.txt
+# the flags, the number is the same as in dft_language.LANGUAGES and dft_lang.txt
 FLAGS = {
 	'1': 'flag_nation_se.png',
 	'2': 'flag_nation_en.png',
@@ -69,8 +69,8 @@ def load_images():
 
 # set_language() - saves the language until next time, sets the window title and returns the texts
 def set_language(window, number):
-	dft.save_language(number)
-	texts = dft.LANGUAGES[number]
+	dft_language.save_language(number)
+	texts = dft_language.LANGUAGES[number]
 	window.title(texts['title'])
 	return texts
 
@@ -229,7 +229,7 @@ def main():
 	window.configure(bg=COL_BACKGROUND)
 
 	load_images()
-	number = dft.load_language()
+	number = dft_language.load_language()
 	if number is None:
 		show_flag_page(window)
 	else:
@@ -256,5 +256,6 @@ if __name__ == "__main__":
 # 1.5 2026-10-20 texts from the language files, the language is saved in dft_lang.txt like dft.py
 # 1.6 2026-10-20 the values in the fields are kept when the language is changed
 # 1.7 2026-10-20 the check of numbers from dft_functions.to_number()
+# 1.8 2026-10-20 languages from dft_language.py instead of dft.py
 
 # ** END SCRIPT ************************************************

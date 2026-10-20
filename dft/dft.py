@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft.py
-# Version   : 1.14
+# Version   : 1.15
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid)
-# Linked to : dft_functions.py
+# Linked to : dft_functions.py, dft_language.py
 #
 # Created by: Urban Björkén
 # Date      : 2026-10-13
@@ -18,25 +18,12 @@ from os import path
 # the root directory of the repo, so that common/ can be found
 sys.path.insert(0, path.join(path.dirname(path.abspath(__file__)), '..'))
 import dft_functions
-import lang_se
-import lang_en
-import lang_cz
+import dft_language
 from common.terminal_colors import COL_YELLOW_BLUE, COL_YELLOW_RED, COL_GREEN, COL_STANDARD
 
 # ** Variables *************************************************
 LOG_FILE_NAME = 'dft.log'
 LOG_FILE = path.join(path.dirname(path.abspath(__file__)), LOG_FILE_NAME)
-
-# the chosen language is saved here until next time, like the cookie in the PHP version
-LANG_FILE_NAME = 'dft_lang.txt'
-LANG_FILE = path.join(path.dirname(path.abspath(__file__)), LANG_FILE_NAME)
-
-# the languages to choose from, the number is the choice in the menu
-LANGUAGES = {
-	'1': lang_se.TEXTS,
-	'2': lang_en.TEXTS,
-	'3': lang_cz.TEXTS,
-}
 
 # ** Functions *************************************************
 # ask_number() - asks until the user writes a number that is 0 or more, the check is in dft_functions.to_number()
@@ -59,33 +46,6 @@ def ask_time(texts):
 	return hours, minutes
 
 
-# load_language() - returns the saved language number, or None if no language is saved
-def load_language():
-	try:
-		with open(LANG_FILE) as lang_file:
-			choice = lang_file.read().strip()
-	except FileNotFoundError:
-		return None
-	except OSError as error:
-		logging.error(f"load_language: {error}")
-		return None
-
-	if choice in LANGUAGES:
-		return choice
-
-	logging.error(f"load_language: '{choice}' in {LANG_FILE_NAME} is not a language")
-	return None
-
-
-# save_language() - saves the language number until next time
-def save_language(choice):
-	try:
-		with open(LANG_FILE, 'w') as lang_file:
-			lang_file.write(choice)
-	except OSError as error:
-		logging.error(f"save_language: {error}")
-
-
 # choose_language() - asks until the user chooses a language, saves it and returns the texts for it
 # current_choice is shown as [2], Enter alone keeps it, None when no language is chosen yet
 def choose_language(current_choice):
@@ -95,7 +55,7 @@ def choose_language(current_choice):
 	print()
 	print(f"{COL_YELLOW_BLUE}   D F T   {COL_STANDARD}")
 	print()
-	for number, texts in LANGUAGES.items():
+	for number, texts in dft_language.LANGUAGES.items():
 		print(f"  {number} = {texts['language']}")
 
 	prompt = f"[{current_choice}] > " if current_choice else "> "
@@ -103,12 +63,12 @@ def choose_language(current_choice):
 		choice = input(prompt)
 		if choice == "" and current_choice:
 			choice = current_choice
-		if choice in LANGUAGES:
-			save_language(choice)
+		if choice in dft_language.LANGUAGES:
+			dft_language.save_language(choice)
 			return choice
 
 		logging.error(f"choose_language: '{choice}' is not a language")
-		print(f"{COL_YELLOW_RED} {' / '.join(LANGUAGES)} {COL_STANDARD}")
+		print(f"{COL_YELLOW_RED} {' / '.join(dft_language.LANGUAGES)} {COL_STANDARD}")
 
 
 # show_title() - clears the screen and shows the title in the chosen language
@@ -125,12 +85,12 @@ def show_title(texts):
 # Ctrl+C or Ctrl+D ends the script quietly instead of showing a Python error
 def main():
 	# Swedish until a language is chosen, used if Ctrl+C comes before that
-	texts = lang_se.TEXTS
+	texts = dft_language.LANGUAGES['1']
 	try:
-		language_choice = load_language()
+		language_choice = dft_language.load_language()
 		if language_choice is None:
 			language_choice = choose_language(None)
-		texts = LANGUAGES[language_choice]
+		texts = dft_language.LANGUAGES[language_choice]
 		show_title(texts)
 
 		while True:
@@ -171,7 +131,7 @@ def main():
 
 			elif choice == "4":
 				language_choice = choose_language(language_choice)
-				texts = LANGUAGES[language_choice]
+				texts = dft_language.LANGUAGES[language_choice]
 				show_title(texts)
 
 			elif choice == "0":
@@ -210,5 +170,6 @@ if __name__ == "__main__":
 # 1.12 2026-10-14 nan and inf are not accepted as numbers
 # 1.13 2026-10-14 terminal_colors from common/
 # 1.14 2026-10-20 the check of numbers moved to dft_functions.to_number()
+# 1.15 2026-10-20 the languages and the saved language moved to dft_language.py
 
 # ** END SCRIPT ************************************************
