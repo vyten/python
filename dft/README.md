@@ -45,6 +45,7 @@ Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet, från bå
 |---|---|
 | `dft.py` | Huvudskriptet: meny, inmatning och utskrift |
 | `dft_gui.py` | Samma program i ett fönster (tkinter). Tre sidor som i PHP-versionen: flaggor, startsida och uträkning |
+| `test_dft_gui.py` | Tester för fönstret: klickar på knapparna, fyller i fälten och läser av svaren |
 | `img/` | Flaggorna för språkvalet, från PHP-versionen |
 | `dft_functions.py` | Uträkningarna: `calculate_distance()`, `calculate_speed()`, `calculate_time()`, hjälpfunktionerna `to_minutes()` och `to_hours_and_minutes()`, och `to_number()` som kontrollerar inmatade tal |
 | `dft_language.py` | Språken (`LANGUAGES`) och det sparade språket (`load_language()`, `save_language()`), används av både terminalen och fönstret |
@@ -55,6 +56,15 @@ Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet, från bå
 Färgerna hämtas från [`common/terminal_colors.py`](../common/README.md).
 
 Kör `python3 dft_functions.py` för att testa uträkningarna. Den skriver `All tests OK`, eller stoppar med `AssertionError` och visar vilket svar som är fel.
+
+## Tester
+
+```bash
+python3 dft_functions.py     # uträkningarna och kontrollen av tal, skriver All tests OK
+python3 test_dft_gui.py      # fönstret, 17 tester med unittest
+```
+
+Testerna för fönstret öppnar ett fönster per test, klickar och stänger det igen. De behöver en skärm och hoppas över om det inte finns någon. Det sparade språket läggs i en tillfällig katalog, så din egen `dft_lang.txt` påverkas inte, och felen testerna gör med flit hamnar inte i `dft.log`.
 
 ## Utvärdering
 
@@ -85,9 +95,9 @@ Synpunkter från en kodgranskning av programmet.
 - **Sidorna byggs från en tabell** (`CALCULATIONS`). De tre uträkningssidorna delar samma kod, och bara fälten skiljer.
 - **Felen syns där de är:** fältet som är fel blir rött och får markören.
 - **Färgerna och typsnitten är konstanter** överst i filen, med samma värden som i PHP-versionens `w3.css`.
+- **Fönstret har egna tester** i `test_dft_gui.py`, med språkval, uträkningar, fel, Enter och knapparna.
 - **Två klassiska tkinter-fällor är undvikna:** bilderna sparas i en variabel så att de inte försvinner, och `lambda number=number:` ger varje flagga sitt eget språk.
 
 ### Att förbättra
 
-- **Fönstret testas för hand.** Uträkningarna har `assert`, men sidorna och knapparna har inga egna tester.
 - **Nio rader i `lang_cz.py` är fortfarande på svenska** och väntar på översättning.

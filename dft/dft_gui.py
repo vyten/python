@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft_gui.py
-# Version   : 1.9
+# Version   : 1.10
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid) in a window
 # Linked to : dft_functions.py, dft_language.py
 #
@@ -227,9 +227,10 @@ def show_calculate_page(window, calculation, texts, values=None):
 				[entry.get() for entry in entries])).pack(side='left', padx=5)
 
 
-# main() - creates the window, shows the first page and waits for the user
+# create_window() - creates the window and shows the first page, returns the window
 # the flags are shown the first time, after that the start page in the saved language
-def main():
+# separate from main() so that test_dft_gui.py can create the window without mainloop()
+def create_window():
 	window = tk.Tk()
 	window.title(WINDOW_TITLE)
 	window.geometry(WINDOW_SIZE)
@@ -241,6 +242,13 @@ def main():
 		show_flag_page(window)
 	else:
 		show_start_page(window, set_language(window, number))
+
+	return window
+
+
+# main() - creates the window and waits for the user
+def main():
+	window = create_window()
 
 	# mainloop() shows the window and runs until it is closed
 	window.mainloop()
@@ -265,5 +273,6 @@ if __name__ == "__main__":
 # 1.7 2026-10-20 the check of numbers from dft_functions.to_number()
 # 1.8 2026-10-20 languages from dft_language.py instead of dft.py
 # 1.9 2026-10-20 Enter calculates
+# 1.10 2026-10-20 create_window() separate from main(), for test_dft_gui.py
 
 # ** END SCRIPT ************************************************
