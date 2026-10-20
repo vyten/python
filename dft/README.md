@@ -29,16 +29,22 @@ Fönsterversionen startas med:
 python3 dft_gui.py
 ```
 
-Första gången väljer du språk med flaggorna, sedan kommer du direkt till startsidan. De små flaggorna på uträkningssidan byter språk. Fönstret och terminalen delar samma sparade språk i `dft_lang.txt`.
+Fönstret har tre sidor, som webbsidan i PHP-versionen:
 
-Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet. Namnet ändras i konstanten `LOG_FILE_NAME` i `dft.py`.
+1. **Språksidan** med tre flaggor. Den visas bara första gången.
+2. **Startsidan** med knapparna Distans, Fart och Tid, samt Avsluta.
+3. **Uträkningssidan** med de fält som behövs, knappen Beräkna, Tillbaka och tre små flaggor som byter språk. Det du har skrivit i fälten följer med vid språkbyte.
+
+Svaret visas i gult. Fel visas i gult på rött, och fältet som är fel blir rött. Fönstret och terminalen delar samma sparade språk i `dft_lang.txt`.
+
+Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet, från både terminalen och fönstret. Namnet ändras i konstanten `LOG_FILE_NAME` i `dft.py` och `dft_gui.py`.
 
 ## Filer
 
 | Fil | Innehåll |
 |---|---|
 | `dft.py` | Huvudskriptet: meny, inmatning och utskrift |
-| `dft_gui.py` | Samma program i ett fönster (tkinter), under arbete. Tre sidor som i PHP-versionen: flaggor, startsida och uträkning |
+| `dft_gui.py` | Samma program i ett fönster (tkinter). Tre sidor som i PHP-versionen: flaggor, startsida och uträkning |
 | `img/` | Flaggorna för språkvalet, från PHP-versionen |
 | `dft_functions.py` | Uträkningarna: `calculate_distance()`, `calculate_speed()`, `calculate_time()` och hjälpfunktionerna `to_minutes()` och `to_hours_and_minutes()` |
 | `lang_se.py` | Svenska texter, för både terminalen och fönstret |
@@ -72,6 +78,19 @@ Synpunkter från en kodgranskning av programmet.
 
 - **Alla tre filerna har samma nycklar**, och tal formateras i själva texten (`{distance:.1f}`), så varje språk kan placera talet där det passar.
 
+### dft_gui.py
+
+- **Inga uträkningar är skrivna en gång till.** Fönstret använder `dft_functions.py` för uträkningarna och `dft.py` för språken och det sparade språket, så terminalen och fönstret räknar alltid likadant.
+- **Sidorna byggs från en tabell** (`CALCULATIONS`). De tre uträkningssidorna delar samma kod, och bara fälten skiljer.
+- **Felen syns där de är:** fältet som är fel blir rött och får markören.
+- **Färgerna och typsnitten är konstanter** överst i filen, med samma värden som i PHP-versionens `w3.css`.
+- **Två klassiska tkinter-fällor är undvikna:** bilderna sparas i en variabel så att de inte försvinner, och `lambda number=number:` ger varje flagga sitt eget språk.
+
 ### Att förbättra
+
+- **Kontrollen av tal finns två gånger:** `ask_number()` i `dft.py` och `read_number()` i `dft_gui.py` gör samma sak. Kontrollen skulle kunna flyttas till en gemensam funktion i `dft_functions.py`, som returnerar talet eller vilket fel det är.
+- **`dft_gui.py` importerar hela `dft.py`** för att komma åt språken. Då följer terminaldelar som `subprocess` och `terminal_colors` med. `LANGUAGES`, `load_language()` och `save_language()` skulle kunna ligga i en egen fil, till exempel `dft_language.py`, som båda använder.
+- **Enter räknar inte ut i fönstret,** utan man måste klicka på Beräkna. Det går att lägga till med `window.bind('<Return>', ...)`.
+- **Fönstret testas för hand.** Uträkningarna har `assert`, men sidorna och knapparna har inga egna tester.
 
 - **Nio rader i `lang_cz.py` är fortfarande på svenska** och väntar på översättning.

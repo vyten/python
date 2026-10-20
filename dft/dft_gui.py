@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft_gui.py
-# Version   : 1.5
+# Version   : 1.6
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid) in a window
 # Linked to : dft_functions.py, dft.py, lang_se.py, lang_en.py, lang_cz.py
 #
@@ -190,7 +190,8 @@ def show_start_page(window, texts):
 
 
 # show_calculate_page() - page 3, the fields for the chosen calculation
-def show_calculate_page(window, calculation, texts):
+# values is what was written in the fields before a change of language, None for empty fields
+def show_calculate_page(window, calculation, texts, values=None):
 	clear_page(window)
 	fields = CALCULATIONS[calculation]
 	show_header(window, texts[calculation])
@@ -209,6 +210,8 @@ def show_calculate_page(window, calculation, texts):
 		tk.Label(form, text=text, font=FONT_TEXT, bg=COL_BACKGROUND, fg=COL_TEXT).grid(row=row, column=0, sticky='e', padx=5, pady=5)
 		entry = tk.Entry(form, width=6, font=FONT_TEXT, bg=COL_INPUT)
 		entry.grid(row=row, column=1, padx=5, pady=5)
+		if values:
+			entry.insert(0, values[row])
 		entries.append(entry)
 		tk.Label(form, text=unit, font=FONT_TEXT, bg=COL_BACKGROUND, fg=COL_TEXT).grid(row=row, column=2, sticky='w', padx=5, pady=5)
 
@@ -219,13 +222,14 @@ def show_calculate_page(window, calculation, texts):
 		lambda: calculate(calculation, entries, result_label, texts)).pack(pady=10)
 	make_button(window, f"« {texts['back']}", COL_BACK, lambda: show_start_page(window, texts)).pack(pady=10)
 
-	# small flags to change language, the same page is shown again in the new language
+	# small flags to change language, the same page is shown again in the new language with the same values
 	flag_row = tk.Frame(window, bg=COL_BACKGROUND)
 	flag_row.pack(pady=10)
 	for number in FLAGS:
 		tk.Button(flag_row, image=small_flag_images[number], bg=COL_BACKGROUND, activebackground=COL_HOVER,
 			relief='flat', cursor='hand2', bd=0,
-			command=lambda number=number: show_calculate_page(window, calculation, set_language(window, number))).pack(side='left', padx=5)
+			command=lambda number=number: show_calculate_page(window, calculation, set_language(window, number),
+				[entry.get() for entry in entries])).pack(side='left', padx=5)
 
 
 # main() - creates the window, shows the first page and waits for the user
@@ -262,5 +266,6 @@ if __name__ == "__main__":
 # 1.3 2026-10-14 the calculate button calculates with dft_functions.py
 # 1.4 2026-10-14 wrong input and 0 give an error in yellow on red, logging to dft.log
 # 1.5 2026-10-20 texts from the language files, the language is saved in dft_lang.txt like dft.py
+# 1.6 2026-10-20 the values in the fields are kept when the language is changed
 
 # ** END SCRIPT ************************************************
