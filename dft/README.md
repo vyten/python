@@ -90,5 +90,4 @@ Synpunkter från en kodgranskning av programmet.
 ### Att förbättra
 
 - **Fönstret testas för hand.** Uträkningarna har `assert`, men sidorna och knapparna har inga egna tester.
-
 - **Nio rader i `lang_cz.py` är fortfarande på svenska** och väntar på översättning.
