@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft.py
-# Version   : 1.13
+# Version   : 1.14
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid)
 # Linked to : dft_functions.py
 #
@@ -13,7 +13,6 @@
 # ** Imports ***************************************************
 import subprocess
 import logging
-import math
 import sys
 from os import path
 # the root directory of the repo, so that common/ can be found
@@ -40,26 +39,14 @@ LANGUAGES = {
 }
 
 # ** Functions *************************************************
-# ask_number() - asks until the user writes a number that is 0 or more, accepts both 2.5 and 2,5
+# ask_number() - asks until the user writes a number that is 0 or more, the check is in dft_functions.to_number()
 def ask_number(question, texts):
 	while True:
-		user_input_value = input(question).replace(',', '.')
-		try:
-			number = float(user_input_value)
-		except ValueError:
-			logging.error(f"ask_number: '{user_input_value}' is not a number")
-			print(f"{COL_YELLOW_RED} {texts['error_not_number']} {COL_STANDARD}")
-			continue
-
-		# float() also accepts nan and inf, they are not numbers that can be calculated with
-		if not math.isfinite(number):
-			logging.error(f"ask_number: '{user_input_value}' is not a finite number")
-			print(f"{COL_YELLOW_RED} {texts['error_not_number']} {COL_STANDARD}")
-			continue
-
-		if number < 0:
-			logging.error(f"ask_number: {number} is negative")
-			print(f"{COL_YELLOW_RED} {texts['error_negative']} {COL_STANDARD}")
+		user_input_value = input(question)
+		number, error = dft_functions.to_number(user_input_value)
+		if error:
+			logging.error(f"ask_number: '{user_input_value}' {error}")
+			print(f"{COL_YELLOW_RED} {texts[error]} {COL_STANDARD}")
 			continue
 
 		return number
@@ -222,5 +209,6 @@ if __name__ == "__main__":
 # 1.11 2026-10-14 saved language is used directly, 4 in the menu changes language
 # 1.12 2026-10-14 nan and inf are not accepted as numbers
 # 1.13 2026-10-14 terminal_colors from common/
+# 1.14 2026-10-20 the check of numbers moved to dft_functions.to_number()
 
 # ** END SCRIPT ************************************************

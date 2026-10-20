@@ -46,7 +46,7 @@ Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet, från bå
 | `dft.py` | Huvudskriptet: meny, inmatning och utskrift |
 | `dft_gui.py` | Samma program i ett fönster (tkinter). Tre sidor som i PHP-versionen: flaggor, startsida och uträkning |
 | `img/` | Flaggorna för språkvalet, från PHP-versionen |
-| `dft_functions.py` | Uträkningarna: `calculate_distance()`, `calculate_speed()`, `calculate_time()` och hjälpfunktionerna `to_minutes()` och `to_hours_and_minutes()` |
+| `dft_functions.py` | Uträkningarna: `calculate_distance()`, `calculate_speed()`, `calculate_time()`, hjälpfunktionerna `to_minutes()` och `to_hours_and_minutes()`, och `to_number()` som kontrollerar inmatade tal |
 | `lang_se.py` | Svenska texter, för både terminalen och fönstret |
 | `lang_en.py` | Engelska texter |
 | `lang_cz.py` | Tjeckiska texter (rader märkta TODO är fortfarande på svenska) |
@@ -80,7 +80,7 @@ Synpunkter från en kodgranskning av programmet.
 
 ### dft_gui.py
 
-- **Inga uträkningar är skrivna en gång till.** Fönstret använder `dft_functions.py` för uträkningarna och `dft.py` för språken och det sparade språket, så terminalen och fönstret räknar alltid likadant.
+- **Inga uträkningar är skrivna en gång till.** Fönstret använder `dft_functions.py` för uträkningarna och kontrollen av tal (`to_number()`) och `dft.py` för språken och det sparade språket, så terminalen och fönstret räknar alltid likadant.
 - **Sidorna byggs från en tabell** (`CALCULATIONS`). De tre uträkningssidorna delar samma kod, och bara fälten skiljer.
 - **Felen syns där de är:** fältet som är fel blir rött och får markören.
 - **Färgerna och typsnitten är konstanter** överst i filen, med samma värden som i PHP-versionens `w3.css`.
@@ -88,7 +88,6 @@ Synpunkter från en kodgranskning av programmet.
 
 ### Att förbättra
 
-- **Kontrollen av tal finns två gånger:** `ask_number()` i `dft.py` och `read_number()` i `dft_gui.py` gör samma sak. Kontrollen skulle kunna flyttas till en gemensam funktion i `dft_functions.py`, som returnerar talet eller vilket fel det är.
 - **`dft_gui.py` importerar hela `dft.py`** för att komma åt språken. Då följer terminaldelar som `subprocess` och `terminal_colors` med. `LANGUAGES`, `load_language()` och `save_language()` skulle kunna ligga i en egen fil, till exempel `dft_language.py`, som båda använder.
 - **Enter räknar inte ut i fönstret,** utan man måste klicka på Beräkna. Det går att lägga till med `window.bind('<Return>', ...)`.
 - **Fönstret testas för hand.** Uträkningarna har `assert`, men sidorna och knapparna har inga egna tester.

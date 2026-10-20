@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft_gui.py
-# Version   : 1.6
+# Version   : 1.7
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid) in a window
 # Linked to : dft_functions.py, dft.py, lang_se.py, lang_en.py, lang_cz.py
 #
@@ -13,7 +13,6 @@
 # ** Imports ***************************************************
 import tkinter as tk
 import logging
-import math
 from os import path
 import dft_functions
 import dft    # LANGUAGES, load_language() and save_language(), the same saved language as in the terminal
@@ -102,24 +101,13 @@ def show_error(result_label, text, entry):
 
 
 # read_number() - returns the number in the field, or None and shows the error
-# accepts both 2.5 and 2,5, not letters, nan, inf or negative numbers
+# the check is in dft_functions.to_number(), the same as in dft.py
 def read_number(entry, result_label, texts):
-	user_input_value = entry.get().replace(',', '.')
-	try:
-		number = float(user_input_value)
-	except ValueError:
-		logging.error(f"read_number: '{user_input_value}' is not a number")
-		show_error(result_label, texts['error_not_number'], entry)
-		return None
-
-	if not math.isfinite(number):
-		logging.error(f"read_number: '{user_input_value}' is not a finite number")
-		show_error(result_label, texts['error_not_number'], entry)
-		return None
-
-	if number < 0:
-		logging.error(f"read_number: {number} is negative")
-		show_error(result_label, texts['error_negative'], entry)
+	user_input_value = entry.get()
+	number, error = dft_functions.to_number(user_input_value)
+	if error:
+		logging.error(f"read_number: '{user_input_value}' {error}")
+		show_error(result_label, texts[error], entry)
 		return None
 
 	return number
@@ -267,5 +255,6 @@ if __name__ == "__main__":
 # 1.4 2026-10-14 wrong input and 0 give an error in yellow on red, logging to dft.log
 # 1.5 2026-10-20 texts from the language files, the language is saved in dft_lang.txt like dft.py
 # 1.6 2026-10-20 the values in the fields are kept when the language is changed
+# 1.7 2026-10-20 the check of numbers from dft_functions.to_number()
 
 # ** END SCRIPT ************************************************
