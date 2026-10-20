@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : lang_se.py
-# Version   : 1.2
-# Purpose   : Swedish texts for dft.py
-# Linked to : dft.py
+# Version   : 1.3
+# Purpose   : Swedish texts for dft.py and dft_gui.py
+# Linked to : dft.py, dft_gui.py
 #
 # Created by: Urban Björkén
 # Date      : 2026-10-14
@@ -45,6 +45,15 @@ TEXTS = {
 	'error_time_zero': 'Tiden får inte vara 0',
 	'error_speed_zero': 'Farten får inte vara 0',
 	'error_menu': 'Välj 1, 2, 3, 4 eller 0',
+
+	# window, used by dft_gui.py
+	'calculate_your': 'Beräkna din',
+	'calculate': 'Beräkna',
+	'back': 'Tillbaka',
+	'unit_distance': 'nm',
+	'unit_speed': 'knop',
+	'unit_hours': 'h',
+	'unit_minutes': 'min',
 }
 
 # ** Functions *************************************************
@@ -60,5 +69,6 @@ if __name__ == "__main__":
 # 1.0 2026-10-14 Initial version
 # 1.1 2026-10-14 change_language, 4 in error_menu
 # 1.2 2026-10-14 nm instead of M, same as English and Czech
+# 1.3 2026-10-20 texts for the window: calculate, back and units
 
 # ** END SCRIPT ************************************************

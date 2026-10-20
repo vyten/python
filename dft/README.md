@@ -23,6 +23,14 @@ python3 dft.py
 
 Första gången väljer du språk: 1 = Svenska, 2 = English, 3 = český. Språket sparas i `dft_lang.txt` bredvid skriptet, och nästa gång kommer du direkt till menyn. I menyn väljer du 1 = Distans, 2 = Fart, 3 = Tid, 4 = Byt språk eller 0 = Avsluta. När du byter språk står det nuvarande inom hakparenteser, till exempel `[2]`, och Enter behåller det. Decimaltal kan skrivas med punkt eller komma, till exempel `5.5` eller `5,5`. Ctrl+C avslutar också.
 
+Fönsterversionen startas med:
+
+```bash
+python3 dft_gui.py
+```
+
+Första gången väljer du språk med flaggorna, sedan kommer du direkt till startsidan. De små flaggorna på uträkningssidan byter språk. Fönstret och terminalen delar samma sparade språk i `dft_lang.txt`.
+
 Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet. Namnet ändras i konstanten `LOG_FILE_NAME` i `dft.py`.
 
 ## Filer
@@ -33,7 +41,7 @@ Felaktig inmatning loggas till `dft.log` i samma katalog som skriptet. Namnet ä
 | `dft_gui.py` | Samma program i ett fönster (tkinter), under arbete. Tre sidor som i PHP-versionen: flaggor, startsida och uträkning |
 | `img/` | Flaggorna för språkvalet, från PHP-versionen |
 | `dft_functions.py` | Uträkningarna: `calculate_distance()`, `calculate_speed()`, `calculate_time()` och hjälpfunktionerna `to_minutes()` och `to_hours_and_minutes()` |
-| `lang_se.py` | Svenska texter |
+| `lang_se.py` | Svenska texter, för både terminalen och fönstret |
 | `lang_en.py` | Engelska texter |
 | `lang_cz.py` | Tjeckiska texter (rader märkta TODO är fortfarande på svenska) |
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : lang_en.py
-# Version   : 1.1
-# Purpose   : English texts for dft.py
-# Linked to : dft.py
+# Version   : 1.2
+# Purpose   : English texts for dft.py and dft_gui.py
+# Linked to : dft.py, dft_gui.py
 #
 # Created by: Urban Björkén
 # Date      : 2026-10-14
@@ -45,6 +45,15 @@ TEXTS = {
 	'error_time_zero': 'The time must not be 0',
 	'error_speed_zero': 'The speed must not be 0',
 	'error_menu': 'Choose 1, 2, 3, 4 or 0',
+
+	# window, used by dft_gui.py
+	'calculate_your': 'Calculate your',
+	'calculate': 'Calculate',
+	'back': 'Back',
+	'unit_distance': 'nm',
+	'unit_speed': 'knots',
+	'unit_hours': 'h',
+	'unit_minutes': 'min',
 }
 
 # ** Functions *************************************************
@@ -59,5 +68,6 @@ if __name__ == "__main__":
 # ** History ***************************************************
 # 1.0 2026-10-14 Initial version
 # 1.1 2026-10-14 change_language, 4 in error_menu
+# 1.2 2026-10-20 texts for the window: calculate, back and units
 
 # ** END SCRIPT ************************************************
