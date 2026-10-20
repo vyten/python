@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # **************************************************************
 # File      : dft_gui.py
-# Version   : 1.8
+# Version   : 1.9
 # Purpose   : calculate distance, speed or time at sea (Distans Fart Tid) in a window
 # Linked to : dft_functions.py, dft_language.py
 #
@@ -76,9 +76,12 @@ def set_language(window, number):
 
 
 # clear_page() - removes everything in the window before a new page is shown
+# Enter is also removed, it belongs to the calculation page and its fields
 def clear_page(window):
 	for widget in window.winfo_children():
 		widget.destroy()
+	window.unbind('<Return>')
+	window.unbind('<KP_Enter>')
 
 
 # make_button() - a button with the colors from the PHP version
@@ -208,6 +211,10 @@ def show_calculate_page(window, calculation, texts, values=None):
 
 	make_button(window, texts['calculate'], COL_CALCULATE,
 		lambda: calculate(calculation, entries, result_label, texts)).pack(pady=10)
+
+	# Enter and Enter on the number pad also calculate, bind() sends an event that is not needed here
+	window.bind('<Return>', lambda event: calculate(calculation, entries, result_label, texts))
+	window.bind('<KP_Enter>', lambda event: calculate(calculation, entries, result_label, texts))
 	make_button(window, f"« {texts['back']}", COL_BACK, lambda: show_start_page(window, texts)).pack(pady=10)
 
 	# small flags to change language, the same page is shown again in the new language with the same values
@@ -257,5 +264,6 @@ if __name__ == "__main__":
 # 1.6 2026-10-20 the values in the fields are kept when the language is changed
 # 1.7 2026-10-20 the check of numbers from dft_functions.to_number()
 # 1.8 2026-10-20 languages from dft_language.py instead of dft.py
+# 1.9 2026-10-20 Enter calculates
 
 # ** END SCRIPT ************************************************

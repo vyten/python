@@ -33,7 +33,7 @@ Fönstret har tre sidor, som webbsidan i PHP-versionen:
 
 1. **Språksidan** med tre flaggor. Den visas bara första gången.
 2. **Startsidan** med knapparna Distans, Fart och Tid, samt Avsluta.
-3. **Uträkningssidan** med de fält som behövs, knappen Beräkna, Tillbaka och tre små flaggor som byter språk. Det du har skrivit i fälten följer med vid språkbyte.
+3. **Uträkningssidan** med de fält som behövs, knappen Beräkna (eller Enter), Tillbaka och tre små flaggor som byter språk. Det du har skrivit i fälten följer med vid språkbyte.
 
 Svaret visas i gult. Fel visas i gult på rött, och fältet som är fel blir rött. Fönstret och terminalen delar samma sparade språk i `dft_lang.txt`.
 
@@ -89,7 +89,6 @@ Synpunkter från en kodgranskning av programmet.
 
 ### Att förbättra
 
-- **Enter räknar inte ut i fönstret,** utan man måste klicka på Beräkna. Det går att lägga till med `window.bind('<Return>', ...)`.
 - **Fönstret testas för hand.** Uträkningarna har `assert`, men sidorna och knapparna har inga egna tester.
 
 - **Nio rader i `lang_cz.py` är fortfarande på svenska** och väntar på översättning.
